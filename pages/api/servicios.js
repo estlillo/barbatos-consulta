@@ -10,8 +10,8 @@ export default function handler(req, res) {
       active: false,
     },
     {
-      title: "Consulta documentos",
-      description: "Consulta la información de un documento.",
+      title: "Verificación de documentos",
+      description: "Consulta la información de un documento firmado mediante el código de barra.",
       urlRedirect: "/ConsultaDocumento",
       active: true,
     },
