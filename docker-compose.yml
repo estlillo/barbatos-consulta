@@ -1,0 +1,13 @@
+version: "3.3"
+
+services:
+  next_consulta:
+    ports:
+      - 3000:3000
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/root/barbatos-consulta-doc
+      - /root/barbatos-consulta-doc/node_modeules
+      - /root/barbatos-consulta-doc/.next  
