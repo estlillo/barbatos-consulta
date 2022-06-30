@@ -1,0 +1,33 @@
+# Using the node image provided by bitbucket
+image: node:16.15.1
+
+pipelines:
+  branches:
+    # run this on every commit to the branch "staging"
+    develop:
+      - step:
+          name: buildAndDeploy
+          # define which caches to use
+          caches:
+            - node # provided by bitbucket to cache node_modules
+            - nextcache # see definitions section below
+          script:
+            # install rsync
+            - apt-get update && apt-get -qq install rsync
+            # install node modules
+            - npm install
+            # build Next.js app
+            - npm run build
+            # create deploy directory (to contain .next folder, package.json, node_modules, public)
+            - mkdir deploy
+            - cp -a .next ./deploy
+            - cp package.json ./deploy
+            - cp -a node_modules ./deploy
+            - cp -a public ./deploy
+            # rsync to a temp directory on remote server
+            - rsync -arz --delete $BITBUCKET_CLONE_DIR/deploy/ $USER@$REMOTE_IP:/opt/develop-temp
+            # clear current serving directory, sync from temp directory to serving directory, restart next server
+            - ssh $USER@$REMOTE_IP "rsync -ar --delete /opt/develop-temp/ /opt/develop && pm2 restart next-develop && rm -r /opt/develop-temp"
+definitions:
+  caches:
+    nextcache: .next/cache
