@@ -26,7 +26,7 @@ pipelines:
             - cp -a public ./deploy
             # rsync to a temp directory on remote server
             - rsync -arz --delete $BITBUCKET_CLONE_DIR/deploy/ $USER@$REMOTE_IP:/opt/develop-temp
-            # clear current serving directory, sync from temp directory to serving directory, restart next server
+            # clear  current serving directory, sync from temp directory to serving directory, restart next server
             - ssh $USER@$REMOTE_IP "rsync -ar --delete /opt/develop-temp/ /opt/develop && pm2 restart next-develop && rm -r /opt/develop-temp"
 definitions:
   caches:
