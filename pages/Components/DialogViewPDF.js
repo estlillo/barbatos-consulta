@@ -1,4 +1,6 @@
 import React from "react";
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import {
   Dialog,
@@ -13,10 +15,15 @@ import ViewerPDF from "./pdfViewer/ViewerPDF";
 export default function DialogViewPDF(props) {
   const { onClose, open, url, nombreArchivo } = props;
 
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+
   return (
     <>
       <Dialog
-        fullScreen
+        fullScreen={fullScreen}
+        fullWidth="true"
+        maxWidth="xl"
         open={open}
         onClose={onClose}
         aria-labelledby="responsive-dialog-title"
