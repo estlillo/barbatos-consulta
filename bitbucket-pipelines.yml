@@ -27,7 +27,7 @@ pipelines:
             # rsync to a temp directory on remote server 
             - rsync -a  -e "ssh -o StrictHostKeyChecking=no" --delete $BITBUCKET_CLONE_DIR/deploy/ $USER@$REMOTE_IP:/opt/develop-temp
             # clear  current serving directory, sync from temp directory to serving directory, restart next server
-            - ssh -o StrictHostKeyChecking=no $USER@$REMOTE_IP "rsync -ar --delete /opt/develop-temp/ /opt/develop && pm2 restart next-develop && rm -r /opt/develop-temp"
+            - ssh -o StrictHostKeyChecking=no $USER@$REMOTE_IP "rsync -ar --delete /opt/develop-temp/ /opt/develop && pm2 restart consulta-bitbucket && rm -r /opt/develop-temp"
 definitions:
   caches:
     nextcache: .next/cache
