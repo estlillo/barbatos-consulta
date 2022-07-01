@@ -1,11 +1,4 @@
-import {
-  Card,
-  Typography,
-
-  Box,
-  Divider,
-  Alert,
-} from "@mui/material";
+import { Card, Typography, Box, Divider, Alert } from "@mui/material";
 import React, { useRef } from "react";
 
 import styles from "../styles/Home.module.css";
@@ -25,16 +18,16 @@ export default function Consulta() {
   const [resultado, setResultado] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState("");
-  const [captchaValido, setCaptchaValido] = React.useState(false);
-  const  captcha = useRef(null);
+  const [captchaValido, setCaptchaValido] = React.useState(true);
+  const captcha = useRef(null);
 
   const onChangeCaptcha = () => {
-    if(captcha.current.getValue()) {
+    if (captcha.current.getValue()) {
       setCaptchaValido(true);
-    }else{
+    } else {
       setCaptchaValido(false);
     }
-  }
+  };
 
   const onChangeHandler = (event) => {
     setCodigoBarra(event.target.value);
@@ -42,7 +35,7 @@ export default function Consulta() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(captchaValido == true){
+    if (captchaValido == true) {
       setError(null);
       setIsLoading(true);
       setResultado([]);
@@ -59,10 +52,9 @@ export default function Consulta() {
           setResultado(resultado);
           setIsLoading(false);
         });
-    }else{
+    } else {
       setError("Por favor, verifica que has leido el captcha");
     }
-   
   };
 
   return (
@@ -74,7 +66,8 @@ export default function Consulta() {
         <h1 className={styles.title}>Verificación de documentos</h1>
 
         <Typography variant="h6" component="h6">
-          Escribe el <strong>código de barra</strong> que aparece en el pie del documento, como se indica a continuación
+          Escribe el <strong>código de barra</strong> que aparece en el pie del
+          documento, como se indica a continuación
         </Typography>
 
         <Card className={styles.grid}>
@@ -100,12 +93,12 @@ export default function Consulta() {
                   id="codigoBarra"
                   label="Código de barra"
                 />
-                <ReCAPTCHA
-                    ref={captcha}
-                    size="normal"
-                    sitekey="6LfMPKogAAAAAIjLBopJVaz1tVQ68XO1_pT_0AVC"
-                    onChange={onChangeCaptcha}
-                  />
+                {/* <ReCAPTCHA */}
+                  {/* ref={captcha} */}
+                  {/* size="normal" */}
+                  {/* sitekey="6LfMPKogAAAAAIjLBopJVaz1tVQ68XO1_pT_0AVC" */}
+                  {/* onChange={onChangeCaptcha} */}
+                {/* /> */}
                 <ButtonConsulta isLoading={isLoading} />
               </Box>
             </form>
