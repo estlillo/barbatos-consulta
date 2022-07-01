@@ -1,31 +1,49 @@
 import { obtenerAccessToken } from "./ObtenerToken";
+import axios from "axios";
 
 export default async function handler(req, res) {
-  const bearerToken = await obtenerAccessToken();
 
-  var myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-  myHeaders.append("Accept", "application/json");
-  myHeaders.append("Authorization", bearerToken);
 
-  var raw = JSON.stringify({
-    codigoBarra: req.body,
-  });
 
-  var requestOptions = {
-    method: "POST",
-    headers: myHeaders,
-    body: raw,
-    redirect: "follow",
-  };
+  try {
+    let codigoBarra = req.body;
 
-  const resultado = await fetch(process.env.EXEDOC_API_CONSULTAR_DOCUMENTO, requestOptions);
+    if (
+      req.body == "" ||
+      req.body == null ||
+      req.body == undefined
+    ) {
+      codigoBarra = "";
+    }
 
-  const data = await resultado.json();
+    const bearerToken = await obtenerAccessToken();
 
-  console.log(data);
+    console.log("BEARER "+bearerToken);
 
-  res.status(200).json(data);
+    const body = {
+      codigoBarra: codigoBarra,
+    };
+
+    axios.post(
+      process.env.EXEDOC_API_CONSULTAR_DOCUMENTO,
+      body,
+      {
+        headers: {
+          Authorization: bearerToken,
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      }
+    ).then((response) => {
+      console.log(response)
+      res.status(200).json(response.data);
+    });
+
+  
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
 }
 
 
