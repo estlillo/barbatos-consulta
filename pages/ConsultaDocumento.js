@@ -18,7 +18,7 @@ export default function Consulta() {
   const [resultado, setResultado] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState("");
-  const [captchaValido, setCaptchaValido] = React.useState(true);
+  const [captchaValido, setCaptchaValido] = React.useState(false);
   const captcha = useRef(null);
 
   const onChangeCaptcha = () => {
@@ -83,44 +83,41 @@ export default function Consulta() {
               </span>
             </div>
           </Box>
-          <Box className={styles.element}>
+          <Box
+            sx={{ display: "flex", flexDirection: "column", padding: "1rem" }}
+          >
             <form onSubmit={handleSubmit}>
-              <Box sx={{ mt: 1, display: "flex", flexDirection: "column" }}>
-                {error && <Alert severity="error">{error}</Alert>}
-                <InputTextBusqueda
-                  onChangeHandler={onChangeHandler}
-                  value={codigoBarra}
-                  id="codigoBarra"
-                  label="Código de barra"
+              {error && <Alert severity="error">{error}</Alert>}
+              <InputTextBusqueda
+                onChangeHandler={onChangeHandler}
+                value={codigoBarra}
+                id="codigoBarra"
+                label="Código de barra"
+              />
+              <div class="g-recaptcha">
+                <ReCAPTCHA
+                  ref={captcha}
+                  sitekey="6LfMPKogAAAAAIjLBopJVaz1tVQ68XO1_pT_0AVC"
+                  onChange={onChangeCaptcha}
                 />
-                {/* <ReCAPTCHA */}
-                  {/* ref={captcha} */}
-                  {/* size="normal" */}
-                  {/* sitekey="6LfMPKogAAAAAIjLBopJVaz1tVQ68XO1_pT_0AVC" */}
-                  {/* onChange={onChangeCaptcha} */}
-                {/* /> */}
-                <ButtonConsulta isLoading={isLoading} />
-              </Box>
+              </div>
+
+              <ButtonConsulta isLoading={isLoading} />
             </form>
           </Box>
         </Card>
         {isLoading && <ContentLoader />}
         {resultado && resultado.documento && (
-          <div>
-            <br></br>
-            <Divider />
-            <br></br>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <DocumentoContent documento={resultado.documento} />
-            </Box>
-          </div>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <DocumentoContent documento={resultado.documento} />
+          </Box>
         )}
       </main>
       <Footer />
