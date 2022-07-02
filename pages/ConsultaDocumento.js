@@ -94,7 +94,7 @@ export default function Consulta() {
                 id="codigoBarra"
                 label="Código de barra"
               />
-              <div class="g-recaptcha">
+              <div>
                 <ReCAPTCHA
                   ref={captcha}
                   sitekey="6LfMPKogAAAAAIjLBopJVaz1tVQ68XO1_pT_0AVC"
