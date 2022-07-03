@@ -1,24 +1,31 @@
-import { Card, Typography, Box, Divider, Alert } from "@mui/material";
+import { Card, Typography, Box, Alert, TextField } from "@mui/material";
 import React, { useRef } from "react";
 
 import styles from "../styles/Home.module.css";
 import Footer from "./Components/footer/Footer";
 import Header from "./Components/Header";
 import ButtonConsulta from "./Components/ButtonConsulta";
-import ContentLoader, { BulletList } from "react-content-loader";
+import ContentLoader from "react-content-loader";
 
-import InputTextBusqueda from "./Components/InputTextBusqueda";
 import DocumentoContent from "./Components/DocumentoContent";
 import LinkVolver from "./Components/LinkVolver";
 import Image from "next/image";
 import ReCAPTCHA from "react-google-recaptcha";
+import useConsultaDocumento from "./custom-hooks/useConsultaDocumento";
+import { useForm } from "react-hook-form";
 
 export default function Consulta() {
   const [codigoBarra, setCodigoBarra] = React.useState("");
-  const [resultado, setResultado] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [error, setError] = React.useState("");
+  const [errorCaptcha, setErrorCaptcha] = React.useState("");
   const [captchaValido, setCaptchaValido] = React.useState(false);
+
+  const [isLoading, resultado, error] = useConsultaDocumento(codigoBarra);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
   const captcha = useRef(null);
 
   const onChangeCaptcha = () => {
@@ -29,31 +36,12 @@ export default function Consulta() {
     }
   };
 
-  const onChangeHandler = (event) => {
-    setCodigoBarra(event.target.value);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = (data) => {
     if (captchaValido == true) {
-      setError(null);
-      setIsLoading(true);
-      setResultado([]);
-      fetch("/api/buscarDocumento", {
-        method: "POST", // *GET, POST, PUT, DELETE, etc.
-        headers: {
-          "Content-Type": "application/json",
-          // 'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: JSON.stringify(codigoBarra),
-      })
-        .then((res) => res.json())
-        .then((resultado) => {
-          setResultado(resultado);
-          setIsLoading(false);
-        });
+      setErrorCaptcha(null);
+      setCodigoBarra(data.codigoBarra);
     } else {
-      setError("Por favor, verifica que has leido el captcha");
+      setErrorCaptcha("Por favor, verifica que has leido el captcha");
     }
   };
 
@@ -86,13 +74,15 @@ export default function Consulta() {
           <Box
             sx={{ display: "flex", flexDirection: "column", padding: "1rem" }}
           >
-            <form onSubmit={handleSubmit}>
-              {error && <Alert severity="error">{error}</Alert>}
-              <InputTextBusqueda
-                onChangeHandler={onChangeHandler}
-                value={codigoBarra}
-                id="codigoBarra"
+            <form onSubmit={handleSubmit(onSubmit)}>
+              {errorCaptcha && <Alert severity="error">{errorCaptcha}</Alert>}
+              <TextField
+                {...register("codigoBarra", { required: "Campo requerido" })}
+                margin="normal"
                 label="Código de barra"
+                variant="standard"
+                error={errors?.codigoBarra?.message.length > 0}
+                helperText={errors?.codigoBarra?.message}
               />
               <div>
                 <ReCAPTCHA
@@ -107,18 +97,28 @@ export default function Consulta() {
           </Box>
         </Card>
         {isLoading && <ContentLoader />}
-        {resultado && resultado.documento && (
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
+
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: "1rem",
+          }}
+        >         
+          {resultado.errores &&
+            resultado.errores.length > 0 &&
+            resultado.errores.map((error, index) => (
+              <Alert severity="error" key={index}>
+                {error}
+              </Alert>
+            ))}
+
+          {resultado && resultado.documento && (
             <DocumentoContent documento={resultado.documento} />
-          </Box>
-        )}
+          )}
+        </Box>
       </main>
       <Footer />
     </div>

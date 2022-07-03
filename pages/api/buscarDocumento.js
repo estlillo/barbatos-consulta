@@ -3,15 +3,13 @@ import axios from "axios";
 
 export default async function handler(req, res) {
 
-
-
   try {
-    let codigoBarra = req.body;
+    let codigoBarra = req.body.codigoBarra;
 
     if (
-      req.body == "" ||
-      req.body == null ||
-      req.body == undefined
+      req.body.codigoBarra == "" ||
+      req.body.codigoBarra == null ||
+      req.body.codigoBarra == undefined
     ) {
       codigoBarra = "";
     }
