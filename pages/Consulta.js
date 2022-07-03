@@ -1,22 +1,19 @@
-import axios from "axios";
 import {
   Typography,
   Box,
   Divider,
   IconButton,
   Stack,
-  Input,
   TextField,
   Alert,
 } from "@mui/material";
 import React from "react";
-import ContentLoader, { BulletList } from "react-content-loader";
+import ContentLoader from "react-content-loader";
 import styles from "../styles/Home.module.css";
 import Footer from "./Components/footer/Footer";
 import Header from "./Components/Header";
 import ButtonConsulta from "./Components/ButtonConsulta";
 
-import InputTextBusqueda from "./Components/InputTextBusqueda";
 import DocumentoContent from "./Components/DocumentoContent";
 import LinkVolver from "./Components/LinkVolver";
 import LaunchIcon from "@mui/icons-material/Launch";
@@ -70,8 +67,9 @@ export default function Consulta() {
                 margin="normal"
                 label="Número de expediente"
                 variant="standard"
+                error={errors?.numeroExpediente}
+                helperText={errors?.numeroExpediente?.message}
               />
-               {errors?.numeroExpediente && <Alert severity="error">{errors.numeroExpediente.message}</Alert>}
               <ButtonConsulta isLoading={isLoading} />
             </Box>
           </form>
