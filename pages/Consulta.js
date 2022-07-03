@@ -5,6 +5,9 @@ import {
   Divider,
   IconButton,
   Stack,
+  Input,
+  TextField,
+  Alert,
 } from "@mui/material";
 import React from "react";
 import ContentLoader, { BulletList } from "react-content-loader";
@@ -19,15 +22,23 @@ import LinkVolver from "./Components/LinkVolver";
 import LaunchIcon from "@mui/icons-material/Launch";
 
 import DialogObservacion from "./Components/DialogObservacion";
-export default function Consulta() {
-  const [numeroExpediente, setNumeroExpediente] = React.useState([""]);
-  const [resultado, setResultado] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [error, setError] = React.useState("");
+import { useForm } from "react-hook-form";
 
+import useConsultaExpediente from "./custom-hooks/useConsultaExpediente";
+
+export default function Consulta() {
+
+  const [numeroExpediente, setNumeroExpediente] = React.useState("");
   const [open, setOpen] = React.useState(false);
   const [observaciones, setObservaciones] = React.useState([]);
+  const {isLoading, resultado, error} = useConsultaExpediente(numeroExpediente);
+  const {register,handleSubmit,formState: { errors }} = useForm();
 
+  const onSubmit = (data) => {
+    setNumeroExpediente(data.numeroExpediente); 
+  }
+
+  //modal observaciones
   const handleClickOpen = (observaciones) => {
     setObservaciones(observaciones);
     setOpen(true);
@@ -38,23 +49,6 @@ export default function Consulta() {
     setOpen(false);
   };
 
-  const onChangeHandler = (event) => {
-    setNumeroExpediente(event.target.value);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setResultado([]);
-    setIsLoading(true);
-    axios
-      .post("/api/buscarExpediente", {
-        numeroExpediente: numeroExpediente,
-      })
-      .then((response) => {
-        setResultado(response.data);
-        setIsLoading(false);
-      });
-  };
 
   return (
     <div className={styles.container}>
@@ -69,15 +63,15 @@ export default function Consulta() {
         </Typography>
 
         <Box className={styles.element}>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <Box sx={{ mt: 1, display: "flex", flexDirection: "column" }}>
-              <InputTextBusqueda
-                required={true}
-                onChangeHandler={onChangeHandler}
-                value={numeroExpediente}
-                id="numeroExpedediente"
-                label="Número expediente"
+              <TextField
+                {...register("numeroExpediente", { required: "Campo requerido" })}
+                margin="normal"
+                label="Número de expediente"
+                variant="standard"
               />
+               {errors?.numeroExpediente && <Alert severity="error">{errors.numeroExpediente.message}</Alert>}
               <ButtonConsulta isLoading={isLoading} />
             </Box>
           </form>
@@ -128,8 +122,7 @@ export default function Consulta() {
             </Box>
           </div>
         )}
-
-        <DialogObservacion
+          <DialogObservacion
           open={open}
           setOpen={setOpen}
           onClose={handleClose}
