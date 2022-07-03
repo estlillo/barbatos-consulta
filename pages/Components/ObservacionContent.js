@@ -1,6 +1,6 @@
 import React from "react";
-import styles from "../../styles/Home.module.css";
-import { Box, Button, Divider, Stack, Typography } from "@mui/material";
+import styles from "@/styles/Home.module.css";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 
 export default function ObservacionContent({ texto, adjuntadoPor, dataUrl }) {

@@ -1,18 +1,17 @@
 import { Card, Typography, Box, Alert, TextField } from "@mui/material";
 import React, { useRef } from "react";
-
-import styles from "../styles/Home.module.css";
-import Footer from "./Components/footer/Footer";
-import Header from "./Components/Header";
-import ButtonConsulta from "./Components/ButtonConsulta";
 import ContentLoader from "react-content-loader";
-
-import DocumentoContent from "./Components/DocumentoContent";
-import LinkVolver from "./Components/LinkVolver";
 import Image from "next/image";
 import ReCAPTCHA from "react-google-recaptcha";
-import useConsultaDocumento from "./custom-hooks/useConsultaDocumento";
 import { useForm } from "react-hook-form";
+
+import styles from "@/styles/Home.module.css";
+import Footer from "@/components/footer/Footer";
+import Header from "@/components/Header";
+import ButtonConsulta from "@/components/ButtonConsulta";
+import DocumentoContent from "@/components/DocumentoContent";
+import LinkVolver from "@/components/LinkVolver";
+import useConsultaDocumento from "@/customHooks/useConsultaDocumento";
 
 export default function Consulta() {
   const [codigoBarra, setCodigoBarra] = React.useState("");
@@ -79,6 +78,7 @@ export default function Consulta() {
               <TextField
                 {...register("codigoBarra", { required: "Campo requerido" })}
                 margin="normal"
+                fullWidth
                 label="Código de barra"
                 variant="standard"
                 error={errors?.codigoBarra?.message.length > 0}
@@ -96,6 +96,7 @@ export default function Consulta() {
             </form>
           </Box>
         </Card>
+        
         {isLoading && <ContentLoader />}
 
         <Box

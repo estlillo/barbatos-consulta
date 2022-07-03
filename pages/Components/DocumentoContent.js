@@ -5,13 +5,11 @@ import {
   CardContent,
   CardHeader,
   Divider,
-  IconButton,
   Stack,
   Typography,
 } from "@mui/material";
-import DateFormated from "./DateFormated";
-import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
-import DialogViewPDF from "./DialogViewPDF";
+import DateFormated from "@/components/DateFormated";
+import DialogViewPDF from "@/components/DialogViewPDF";
 
 export default function DocumentoContent({ documento }) {
   const [open, setOpen] = React.useState(false);

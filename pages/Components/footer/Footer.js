@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../../../styles/Home.module.css";
+import styles from "@/styles/Home.module.css";
 import Version from "./Version";
 import Info from "./Info";
 import DatosInsitucion from "./DatosInsitucion";

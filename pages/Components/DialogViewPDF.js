@@ -8,9 +8,9 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
-import ButtonCancel from "./ButtonCancel";
+import ButtonCancel from "@/components/ButtonCancel";
 
-import ViewerPDF from "./pdfViewer/ViewerPDF";
+import ViewerPDF from "@/components/pdfViewer/ViewerPDF";
 
 export default function DialogViewPDF(props) {
   const { onClose, open, url, nombreArchivo } = props;

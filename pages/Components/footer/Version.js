@@ -1,6 +1,6 @@
 import React from "react";
 import { Typography } from "@mui/material";
-import packageJson from "../../../package.json";
+import packageJson from "@/root/package.json";
 
 export default function Version() {
   const [version, setVersion] = React.useState(packageJson.version);

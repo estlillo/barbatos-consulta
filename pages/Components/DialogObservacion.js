@@ -8,8 +8,8 @@ import {
 } from "@mui/material";
 import React from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import ObservacionContent from "./ObservacionContent";
-import ButtonCancel from "./ButtonCancel";
+import ObservacionContent from "@/components/ObservacionContent";
+import ButtonCancel from "@/components/ButtonCancel";
 
 export default function DialogObservacion(props) {
   const { onClose, open, numeroExpediente, observaciones } = props;

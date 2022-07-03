@@ -1,8 +1,9 @@
-import styles from "../styles/Home.module.css";
-import Header from "./Components/Header";
-import Footer from "./Components/footer/Footer";
-import CardServicio from "./Components/CardServicio";
 import React from "react";
+
+import styles from "@/styles/Home.module.css";
+import Header from "@/components/Header";
+import Footer from "@/components/footer/Footer";
+import CardServicio from "@/components/CardServicio";
 
 export default function Home() {
   const [servicios, SetServicios] = React.useState([]);

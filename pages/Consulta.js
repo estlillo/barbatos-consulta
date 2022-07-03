@@ -9,19 +9,17 @@ import {
 } from "@mui/material";
 import React from "react";
 import ContentLoader from "react-content-loader";
-import styles from "../styles/Home.module.css";
-import Footer from "./Components/footer/Footer";
-import Header from "./Components/Header";
-import ButtonConsulta from "./Components/ButtonConsulta";
-
-import DocumentoContent from "./Components/DocumentoContent";
-import LinkVolver from "./Components/LinkVolver";
+import { useForm } from "react-hook-form";
 import LaunchIcon from "@mui/icons-material/Launch";
 
-import DialogObservacion from "./Components/DialogObservacion";
-import { useForm } from "react-hook-form";
-
-import useConsultaExpediente from "./custom-hooks/useConsultaExpediente";
+import styles from "@/styles/Home.module.css";
+import Footer from "@/components/footer/Footer";
+import Header from "@/components/Header";
+import ButtonConsulta from "@/components/ButtonConsulta";
+import DocumentoContent from "@/components/DocumentoContent";
+import LinkVolver from "@/components/LinkVolver";
+import DialogObservacion from "@/components/DialogObservacion";
+import useConsultaExpediente from "@/customHooks/useConsultaExpediente";
 
 export default function Consulta() {
 

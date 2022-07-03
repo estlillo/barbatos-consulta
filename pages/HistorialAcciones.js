@@ -4,13 +4,13 @@ import {
 } from "@mui/material";
 import React from "react";
 import ContentLoader, { BulletList } from 'react-content-loader'
-import styles from "../styles/Home.module.css";
-import Footer from "./Components/footer/Footer";
-import Header from "./Components/Header";
-import ButtonConsulta from "./Components/ButtonConsulta";
 import { DataGrid } from '@mui/x-data-grid';
-import InputTextBusqueda from "./Components/InputTextBusqueda";
-import LinkVolver from "./Components/LinkVolver";
+import styles from "@/styles/Home.module.css";
+import Footer from "@/components/footer/Footer";
+import Header from "@/components/Header";
+import ButtonConsulta from "@/components/ButtonConsulta";
+import InputTextBusqueda from "@/components/InputTextBusqueda";
+import LinkVolver from "@/components/LinkVolver";
 
 export default function Consulta() {
   const [usuario, setUsuario] = React.useState("");
