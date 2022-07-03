@@ -31,7 +31,7 @@ export default function Consulta() {
   const [numeroExpediente, setNumeroExpediente] = React.useState("");
   const [open, setOpen] = React.useState(false);
   const [observaciones, setObservaciones] = React.useState([]);
-  const {isLoading, resultado, error} = useConsultaExpediente(numeroExpediente);
+  const [isLoading, resultado, error] = useConsultaExpediente(numeroExpediente);
   const {register,handleSubmit,formState: { errors }} = useForm();
 
   const onSubmit = (data) => {

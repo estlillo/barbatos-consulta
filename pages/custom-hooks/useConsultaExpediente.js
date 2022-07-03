@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import axios from "axios";
 
 export default function useConsultaExpediente(numeroExpediente) {
+
   const [resultado, setResultado] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState("");
@@ -20,5 +21,5 @@ export default function useConsultaExpediente(numeroExpediente) {
         });
     }
   }, [numeroExpediente]);
-  return { isLoading, resultado, error };
+  return [ isLoading, resultado, error ];
 }
