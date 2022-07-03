@@ -15,6 +15,8 @@ import ViewerPDF from "./pdfViewer/ViewerPDF";
 export default function DialogViewPDF(props) {
   const { onClose, open, url, nombreArchivo } = props;
 
+  const [fullWidth, setFullWidth] = React.useState(true);
+
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -22,7 +24,7 @@ export default function DialogViewPDF(props) {
     <>
       <Dialog
         fullScreen={fullScreen}
-        fullWidth="true"
+        fullWidth={fullWidth}
         maxWidth="xl"
         open={open}
         onClose={onClose}
