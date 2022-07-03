@@ -1,6 +1,6 @@
 import styles from "../styles/Home.module.css";
 import Header from "./Components/Header";
-import Footer from "./Components/Footer";
+import Footer from "./Components/footer/Footer";
 import CardServicio from "./Components/CardServicio";
 import React from "react";
 

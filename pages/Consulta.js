@@ -9,7 +9,7 @@ import {
 import React from "react";
 import ContentLoader, { BulletList } from "react-content-loader";
 import styles from "../styles/Home.module.css";
-import Footer from "./Components/Footer";
+import Footer from "./Components/footer/Footer";
 import Header from "./Components/Header";
 import ButtonConsulta from "./Components/ButtonConsulta";
 
