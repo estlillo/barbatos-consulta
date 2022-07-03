@@ -108,7 +108,7 @@ export default function Consulta() {
             padding: "1rem",
           }}
         >         
-          {resultado.errores &&
+          {resultado && resultado.errores &&
             resultado.errores.length > 0 &&
             resultado.errores.map((error, index) => (
               <Alert severity="error" key={index}>

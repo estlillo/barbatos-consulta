@@ -1,25 +1,25 @@
 import React, { useEffect } from "react";
 import axios from "axios";
+import useAxios from "axios-hooks";
 
 export default function useConsultaDocumento(codigoBarra) {
-
-  const [resultado, setResultado] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [error, setError] = React.useState("");
+  const [{ data: resultado, loading: isLoading, error }, executePost] =
+    useAxios(
+      {
+        url: "/api/buscarDocumento",
+        method: "POST",
+      },
+      { manual: true }
+    );
 
   useEffect(() => {
     if (codigoBarra) {
-        setResultado([]);
-      setIsLoading(true);
-      axios
-        .post("/api/buscarDocumento", {
+      executePost({
+        data: {
           codigoBarra,
-        })
-        .then((response) => {
-          setResultado(response.data);
-          setIsLoading(false);
-        });
+        },
+      });
     }
   }, [codigoBarra]);
-  return [ isLoading, resultado, error ];
+  return [isLoading, resultado, error];
 }
