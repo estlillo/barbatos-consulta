@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+      "baseUrl": ".",
+      "paths": {
+        "@/components/*": ["pages/Components/*"],
+        "@/customHooks/*": ["pages/custom-hooks/*"],
+        "@/styles/*": ["styles/*"],
+        "@/root/*": ["/*"]
+      }
+    }
+  }
