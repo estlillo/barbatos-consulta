@@ -1,4 +1,5 @@
 const handler = (req, res) => {
+  console.log(process.env.GOOGLE_RECAPTCHA_SECRET_KEY);
     if (req.method === "POST") {
       try {
         fetch("https://www.google.com/recaptcha/api/siteverify", {
