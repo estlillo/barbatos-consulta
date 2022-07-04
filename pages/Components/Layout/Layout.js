@@ -5,6 +5,7 @@ import styles from "@/styles/Home.module.css";
 import LinkVolver from "@/components/LinkVolver";
 import NavBar from "@/layout/NavBar";
 
+
 export default function Layout({ children }) {
   return (
     <>

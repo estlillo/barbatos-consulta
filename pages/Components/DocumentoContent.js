@@ -80,11 +80,13 @@ export default function DocumentoContent({ documento }) {
                 {documento.formatoDocumento}
               </Typography>
             </Stack>
+           
+
             <Stack direction="row" spacing={1} alignItems="top">
               <Typography variant="body2">
-                <strong>Autor:</strong>
+                <strong>Firmante:</strong>
               </Typography>
-              <Typography variant="subtitle2">{documento.autor}</Typography>
+              <Typography variant="subtitle2">{documento.firmantes}</Typography>
             </Stack>
 
             <Stack direction="row" spacing={1} alignItems="top">

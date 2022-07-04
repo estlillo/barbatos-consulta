@@ -6,13 +6,13 @@ export default function Info() {
   return (
     <>
       <a
-        href="https://www.instagram.com/estnomore"
+        href="#"
         target="_blank"
         rel="noopener noreferrer"
       >
-        BarbatosDev 2022{" "}
+        {" "}
         <span className={styles.logo}>
-          <Image src="/logo.png" alt="Barbatos Logo" width={20} height={20} />
+         
         </span>
       </a>
     </>

@@ -13,9 +13,10 @@ import useConsultaDocumento from "@/customHooks/useConsultaDocumento";
 export default function Consulta() {
   const [codigoBarra, setCodigoBarra] = React.useState("");
   const [errorCaptcha, setErrorCaptcha] = React.useState("");
-  const [captchaValido, setCaptchaValido] = React.useState(false);
+  const [captchaValido, setCaptchaValido] = React.useState(true);
 
   const [isLoading, resultado, error] = useConsultaDocumento(codigoBarra);
+
   const {
     register,
     handleSubmit,
@@ -74,13 +75,7 @@ export default function Consulta() {
               error={errors?.codigoBarra?.message.length > 0}
               helperText={errors?.codigoBarra?.message}
             />
-            <div>
-              <ReCAPTCHA
-                ref={captcha}
-                sitekey="6LfMPKogAAAAAIjLBopJVaz1tVQ68XO1_pT_0AVC"
-                onChange={onChangeCaptcha}
-              />
-            </div>
+           
 
             <ButtonConsulta isLoading={isLoading} />
           </form>

@@ -33,13 +33,11 @@ export default async function handler(req, res) {
         },
       }
     ).then((response) => {
-      console.log(response)
       res.status(200).json(response.data);
     });
 
   
   } catch (error) {
-    console.log(error);
     res.status(500).json({ message: error.message });
   }
 }
