@@ -6,11 +6,8 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { useForm } from "react-hook-form";
 
 import styles from "@/styles/Home.module.css";
-import Footer from "@/components/footer/Footer";
-import Header from "@/components/Header";
 import ButtonConsulta from "@/components/ButtonConsulta";
 import DocumentoContent from "@/components/DocumentoContent";
-import LinkVolver from "@/components/LinkVolver";
 import useConsultaDocumento from "@/customHooks/useConsultaDocumento";
 
 export default function Consulta() {
@@ -45,83 +42,75 @@ export default function Consulta() {
   };
 
   return (
-    <div className={styles.container}>
-      <Header />
-      <LinkVolver redirect="/" mensaje="&larr; Volver al inicio" />
+    <>
+      <h1 className={styles.title}>Verificación de documentos</h1>
+      <Typography variant="h6" component="h6">
+        Escribe el <strong>código de barra</strong> que aparece en el pie del
+        documento, como se indica a continuación
+      </Typography>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>Verificación de documentos</h1>
-
-        <Typography variant="h6" component="h6">
-          Escribe el <strong>código de barra</strong> que aparece en el pie del
-          documento, como se indica a continuación
-        </Typography>
-
-        <Card className={styles.grid}>
-          <Box className={styles.element}>
-            <div>
-              <span className={styles.logo}>
-                <Image
-                  src="/image_barcode.svg"
-                  alt="Barbatos Logo"
-                  width={180}
-                  height={180}
-                />
-              </span>
-            </div>
-          </Box>
-          <Box
-            sx={{ display: "flex", flexDirection: "column", padding: "1rem" }}
-          >
-            <form onSubmit={handleSubmit(onSubmit)}>
-              {errorCaptcha && <Alert severity="error">{errorCaptcha}</Alert>}
-              <TextField
-                {...register("codigoBarra", { required: "Campo requerido" })}
-                margin="normal"
-                fullWidth
-                label="Código de barra"
-                variant="standard"
-                error={errors?.codigoBarra?.message.length > 0}
-                helperText={errors?.codigoBarra?.message}
+      <Card className={styles.grid}>
+        <Box className={styles.element}>
+          <div>
+            <span className={styles.logo}>
+              <Image
+                src="/image_barcode.svg"
+                alt="Barbatos Logo"
+                width={180}
+                height={180}
               />
-              <div>
-                <ReCAPTCHA
-                  ref={captcha}
-                  sitekey="6LfMPKogAAAAAIjLBopJVaz1tVQ68XO1_pT_0AVC"
-                  onChange={onChangeCaptcha}
-                />
-              </div>
-
-              <ButtonConsulta isLoading={isLoading} />
-            </form>
-          </Box>
-        </Card>
-        
-        {isLoading && <ContentLoader />}
-
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: "1rem",
-          }}
-        >         
-          {resultado && resultado.errores &&
-            resultado.errores.length > 0 &&
-            resultado.errores.map((error, index) => (
-              <Alert severity="error" key={index}>
-                {error}
-              </Alert>
-            ))}
-
-          {resultado && resultado.documento && (
-            <DocumentoContent documento={resultado.documento} />
-          )}
+            </span>
+          </div>
         </Box>
-      </main>
-      <Footer />
-    </div>
+        <Box sx={{ display: "flex", flexDirection: "column", padding: "1rem" }}>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            {errorCaptcha && <Alert severity="error">{errorCaptcha}</Alert>}
+            <TextField
+              {...register("codigoBarra", { required: "Campo requerido" })}
+              margin="normal"
+              fullWidth
+              label="Código de barra"
+              variant="standard"
+              error={errors?.codigoBarra?.message.length > 0}
+              helperText={errors?.codigoBarra?.message}
+            />
+            <div>
+              <ReCAPTCHA
+                ref={captcha}
+                sitekey="6LfMPKogAAAAAIjLBopJVaz1tVQ68XO1_pT_0AVC"
+                onChange={onChangeCaptcha}
+              />
+            </div>
+
+            <ButtonConsulta isLoading={isLoading} />
+          </form>
+        </Box>
+      </Card>
+
+      {isLoading && <ContentLoader />}
+
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: "1rem",
+        }}
+      >
+        {resultado &&
+          resultado.errores &&
+          resultado.errores.length > 0 &&
+          resultado.errores.map((error, index) => (
+            <Alert severity="error" key={index}>
+              {error}
+            </Alert>
+          ))}
+
+        {resultado && resultado.documento && (
+          <DocumentoContent documento={resultado.documento} />
+        )}
+      </Box>
+    </>
   );
 }

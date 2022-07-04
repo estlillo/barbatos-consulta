@@ -5,6 +5,7 @@
         "@/components/*": ["pages/Components/*"],
         "@/customHooks/*": ["pages/custom-hooks/*"],
         "@/styles/*": ["styles/*"],
+        "@/layout/*": ["pages/Components/Layout/*"],
         "@/root/*": ["/*"]
       }
     }

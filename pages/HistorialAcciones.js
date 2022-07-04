@@ -1,16 +1,10 @@
-import {
-  Typography,
-  Box,
-} from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import React from "react";
-import ContentLoader, { BulletList } from 'react-content-loader'
-import { DataGrid } from '@mui/x-data-grid';
+import ContentLoader, { BulletList } from "react-content-loader";
+import { DataGrid } from "@mui/x-data-grid";
 import styles from "@/styles/Home.module.css";
-import Footer from "@/components/footer/Footer";
-import Header from "@/components/Header";
 import ButtonConsulta from "@/components/ButtonConsulta";
 import InputTextBusqueda from "@/components/InputTextBusqueda";
-import LinkVolver from "@/components/LinkVolver";
 
 export default function Consulta() {
   const [usuario, setUsuario] = React.useState("");
@@ -19,12 +13,12 @@ export default function Consulta() {
   const [error, setError] = React.useState("");
 
   const columns = [
-    { field: 'fecha', headerName: 'FECHA', width: 300 },
-    { field: 'tipoAccion', headerName: 'TIPO ACCIÓN', width: 300 },
-    { field: 'username', headerName: 'USUARIO', width: 300 },
-    { field: 'nodo', headerName: 'NODO', width: 300 },
-    { field: 'detalle', headerName: 'DETALLE', width: 600 },
-  ]
+    { field: "fecha", headerName: "FECHA", width: 300 },
+    { field: "tipoAccion", headerName: "TIPO ACCIÓN", width: 300 },
+    { field: "username", headerName: "USUARIO", width: 300 },
+    { field: "nodo", headerName: "NODO", width: 300 },
+    { field: "detalle", headerName: "DETALLE", width: 600 },
+  ];
 
   const onChangeHandler = (event) => {
     setUsuario(event.target.value);
@@ -42,7 +36,8 @@ export default function Consulta() {
         // 'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: JSON.stringify(usuario),
-    }).then((res) => res.json())
+    })
+      .then((res) => res.json())
       .then((data) => {
         setData(data);
         setIsLoading(false);
@@ -50,44 +45,33 @@ export default function Consulta() {
   };
 
   return (
-    <div className={styles.container}>
-      <Header />
-      <LinkVolver
-        redirect="/"
-        mensaje="&larr; Volver al inicio"
-      />
+    <>
+      <h1 className={styles.title}>
+        Servicio de consulta historial acciones de usuario
+      </h1>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>Servicio de consulta historial acciones de usuario</h1>
+      <Typography variant="h6" component="h6">
+        Escribe un nombre de usuario (opcional)
+      </Typography>
 
-        <Typography variant="h6" component="h6">
-          Escribe un nombre de usuario (opcional)
-        </Typography>
+      <form onSubmit={handleSubmit}>
+        <Box sx={{ mt: 1, display: "flex", flexDirection: "column" }}>
+          <InputTextBusqueda
+            onChangeHandler={onChangeHandler}
+            value={usuario}
+            id="usuario"
+            label="Nombre de usuario"
+          />
+          <ButtonConsulta isLoading={isLoading} />
+        </Box>
+      </form>
+      {isLoading && <BulletList />}
 
-        <form onSubmit={handleSubmit}>
-          <Box sx={{ mt: 1, display: "flex", flexDirection: "column" }}>
-            <InputTextBusqueda
-              onChangeHandler={onChangeHandler}
-              value={usuario}
-              id="usuario"
-              label="Nombre de usuario"
-            />
-            <ButtonConsulta isLoading={isLoading} />
-          </Box>
-        </form>
-        {isLoading && <BulletList />}
-
-        {data && data.length > 0 && (
-          <div style={{ height: 700, width: '100%' }}>
-            <DataGrid
-              columns={columns}
-              rows={data}
-              pageSize={50}
-            />
-          </div>
-        )}
-      </main>
-      <Footer />
-    </div>
+      {data && data.length > 0 && (
+        <div style={{ height: 700, width: "100%" }}>
+          <DataGrid columns={columns} rows={data} pageSize={50} />
+        </div>
+      )}
+    </>
   );
 }

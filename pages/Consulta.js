@@ -13,25 +13,25 @@ import { useForm } from "react-hook-form";
 import LaunchIcon from "@mui/icons-material/Launch";
 
 import styles from "@/styles/Home.module.css";
-import Footer from "@/components/footer/Footer";
-import Header from "@/components/Header";
 import ButtonConsulta from "@/components/ButtonConsulta";
 import DocumentoContent from "@/components/DocumentoContent";
-import LinkVolver from "@/components/LinkVolver";
 import DialogObservacion from "@/components/DialogObservacion";
 import useConsultaExpediente from "@/customHooks/useConsultaExpediente";
 
 export default function Consulta() {
-
   const [numeroExpediente, setNumeroExpediente] = React.useState("");
   const [open, setOpen] = React.useState(false);
   const [observaciones, setObservaciones] = React.useState([]);
   const [isLoading, resultado, error] = useConsultaExpediente(numeroExpediente);
-  const {register,handleSubmit,formState: { errors }} = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const onSubmit = (data) => {
-    setNumeroExpediente(data.numeroExpediente); 
-  }
+    setNumeroExpediente(data.numeroExpediente);
+  };
 
   //modal observaciones
   const handleClickOpen = (observaciones) => {
@@ -44,90 +44,82 @@ export default function Consulta() {
     setOpen(false);
   };
 
-
   return (
-    <div className={styles.container}>
-      <Header />
-      <LinkVolver redirect="/" mensaje="&larr; Volver al inicio" />
+    <>
+      <h1 className={styles.title}>Servicio de consulta expediente</h1>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>Servicio de consulta expediente</h1>
+      <Typography variant="h6" component="h6">
+        Escribe el número de expediente
+      </Typography>
 
-        <Typography variant="h6" component="h6">
-          Escribe el número de expediente
-        </Typography>
+      <Box className={styles.element}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Box sx={{ mt: 1, display: "flex", flexDirection: "column" }}>
+            <TextField
+              {...register("numeroExpediente", { required: "Campo requerido" })}
+              margin="normal"
+              label="Número de expediente"
+              variant="standard"
+              error={errors?.numeroExpediente?.message.length > 0}
+              helperText={errors?.numeroExpediente?.message}
+            />
+            <ButtonConsulta isLoading={isLoading} />
+          </Box>
+        </form>
+      </Box>
 
-        <Box className={styles.element}>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Box sx={{ mt: 1, display: "flex", flexDirection: "column" }}>
-              <TextField
-                {...register("numeroExpediente", { required: "Campo requerido" })}
-                margin="normal"
-                label="Número de expediente"
-                variant="standard"
-                error={errors?.numeroExpediente}
-                helperText={errors?.numeroExpediente?.message}
-              />
-              <ButtonConsulta isLoading={isLoading} />
-            </Box>
-          </form>
-        </Box>
+      {isLoading && <ContentLoader />}
 
-        {isLoading && <ContentLoader />}
-
-        {resultado && resultado.documentos && (
-          <div>
-            <br></br>
-            <Divider />
-            <br></br>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Typography variant="h5" component="h2">
-                <strong>Expediente</strong> {resultado.numeroExpediente}
+      {resultado && resultado.documentos && (
+        <div>
+          <br></br>
+          <Divider />
+          <br></br>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Typography variant="h5" component="h2">
+              <strong>Expediente</strong> {resultado.numeroExpediente}
+            </Typography>
+            <Stack direction="row" spacing={1} alignItems="center">
+              <Typography variant="body2" component="p">
+                <strong>Documentos</strong> {resultado.cantidadDocumentos}
               </Typography>
-              <Stack direction="row" spacing={1} alignItems="center">
-                <Typography variant="body2" component="p">
-                  <strong>Documentos</strong> {resultado.cantidadDocumentos}
-                </Typography>
 
-                <Divider orientation="vertical" />
+              <Divider orientation="vertical" />
 
-                <Typography variant="body2" component="p">
-                  <strong>Observaciones</strong>{" "}
-                  {resultado.cantidadObservaciones}
-                  <IconButton
-                    color="primary"
-                    aria-label="upload picture"
-                    component="span"
-                    onClick={() => handleClickOpen(resultado.observaciones)}
-                  >
-                    <LaunchIcon />
-                  </IconButton>
-                </Typography>
-              </Stack>
+              <Typography variant="body2" component="p">
+                <strong>Observaciones</strong> {resultado.cantidadObservaciones}
+                <IconButton
+                  color="primary"
+                  aria-label="upload picture"
+                  component="span"
+                  onClick={() => handleClickOpen(resultado.observaciones)}
+                >
+                  <LaunchIcon />
+                </IconButton>
+              </Typography>
+            </Stack>
 
-              {resultado?.documentos?.map((documento, index) => (
-                <DocumentoContent documento={documento} key={index} />
-              ))}
-            </Box>
-          </div>
-        )}
-          <DialogObservacion
-          open={open}
-          setOpen={setOpen}
-          onClose={handleClose}
-          notifyError={null}
-          observaciones={observaciones}
-          numeroExpediente={numeroExpediente}
-        />
-      </main>
-      <Footer />
-    </div>
+            {resultado?.documentos?.map((documento, index) => (
+              <DocumentoContent documento={documento} key={index} />
+            ))}
+          </Box>
+        </div>
+      )}
+      <DialogObservacion
+        open={open}
+        setOpen={setOpen}
+        onClose={handleClose}
+        notifyError={null}
+        observaciones={observaciones}
+        numeroExpediente={numeroExpediente}
+      />
+    </>
   );
 }
