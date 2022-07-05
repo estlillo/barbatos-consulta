@@ -14,9 +14,7 @@ export default function useConsultaDocumento(codigoBarra) {
           gReCaptchaToken,
     })
       .then((res) => {
-        console.log(res?.data?.status);
         if (res?.data?.status === "success") {
-          console.log("se preguntara a mds");
           axios
             .post("/api/buscarDocumento", {
               codigoBarra,
@@ -40,13 +38,10 @@ export default function useConsultaDocumento(codigoBarra) {
       setResultado([]);
       setIsLoading(true);
       if (!executeRecaptcha) {
-        console.log("Execute recaptcha not yet available");
         return;
       }
 
       executeRecaptcha("enquiryFormSubmit").then((gReCaptchaToken) => {
-        console.log(gReCaptchaToken, "response Google reCaptcha server");
-
         submitEnquiryForm(gReCaptchaToken);
       });
     }
