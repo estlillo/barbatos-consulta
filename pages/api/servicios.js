@@ -1,5 +1,4 @@
 export default function handler(req, res) {
-  console.log("carga de servicios activos");
 
   const servicios = [
     {
