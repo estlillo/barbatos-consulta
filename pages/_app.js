@@ -1,12 +1,23 @@
 import "@/styles/globals.css";
 import Layout from "@/layout/Layout";
+import { useEffect, useState } from "react";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 
 function MyApp({ Component, pageProps }) {
-  console.log(process.env.NEXT_PUBLIC_GOOGLE_RECAPTCHA_SITE_KEY);
+  const [siteKey, setSiteKey] = useState("");
+
+  useEffect(() => {
+    fetch("/api/obtenerVariablesCliente")
+      .then((res) => res.json())
+      .then((resultado) => {
+        console.log("siteKey: " + resultado.siteKey);
+        setSiteKey(resultado.siteKey);
+      });
+  }, []);
+
   return (
     <GoogleReCaptchaProvider
-      reCaptchaKey={process.env.NEXT_PUBLIC_GOOGLE_RECAPTCHA_SITE_KEY}
+      reCaptchaKey={siteKey}
       scriptProps={{
         async: false,
         defer: false,
