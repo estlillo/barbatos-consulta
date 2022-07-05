@@ -1,43 +1,50 @@
+
+import axios from "axios";
 const handler = (req, res) => {
-  console.log(process.env.GOOGLE_RECAPTCHA_SECRET_KEY);
-    if (req.method === "POST") {
-      try {
-        fetch("https://www.google.com/recaptcha/api/siteverify", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          body: `secret=${process.env.GOOGLE_RECAPTCHA_SECRET_KEY}&response=${req.body.gRecaptchaToken}`,
-        })
-          .then((reCaptchaRes) => reCaptchaRes.json())
-          .then((reCaptchaRes) => {
-            console.log(
-              reCaptchaRes,
-              "Response from Google reCaptcha verification API"
-            );
-            if (reCaptchaRes?.score > 0.5) {
-              // Save data to the database from here
-              res.status(200).json({
-                status: "success",
-                message: "Enquiry submitted successfully",
-              });
-            } else {
-              res.status(200).json({
-                status: "failure",
-                message: "Google ReCaptcha Failure",
-              });
-            }
+  console.log("llega al handler 2");
+
+  try {
+    let gRecaptchaToken = req.body.gReCaptchaToken;
+
+    console.log(process.env.GOOGLE_RECAPTCHA_SECRET_KEY);
+    console.log(req.body.gReCaptchaToken);
+    console.log(
+      `secret=${process.env.GOOGLE_RECAPTCHA_SECRET_KEY}&response=${gRecaptchaToken}`
+    );
+
+
+
+  const body = `secret=${process.env.GOOGLE_RECAPTCHA_SECRET_KEY}&response=${gRecaptchaToken}`;
+
+
+
+    axios
+      .post("https://www.google.com/recaptcha/api/siteverify", body, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+      })
+      .then((reCaptchaRes) => {
+
+        console.log("Response from Google reCaptcha verification API");
+
+        if (reCaptchaRes?.data?.score > 0.5) {
+          // Save data to the database from here
+          res.status(200).json({
+            status: "success",
+            message: "Enquiry submitted successfully",
           });
-      } catch (err) {
-        res.status(405).json({
-          status: "failure",
-          message: "Error submitting the enquiry form",
-        });
-      }
-    } else {
-      res.status(405);
-      res.end();
-    }
-  };
-  
-  export default handler;
+        } else {
+          res.status(200).json({
+            status: "failure",
+            message: "Google ReCaptcha Failure",
+          });
+        }
+      });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export default handler;

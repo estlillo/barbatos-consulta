@@ -16,8 +16,6 @@ export default async function handler(req, res) {
 
     const bearerToken = await obtenerAccessToken();
 
-    console.log("BEARER "+bearerToken);
-
     const body = {
       codigoBarra: codigoBarra,
     };

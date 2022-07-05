@@ -9,20 +9,14 @@ export default function useConsultaDocumento(codigoBarra) {
   const { executeRecaptcha } = useGoogleReCaptcha();
 
   const submitEnquiryForm = (gReCaptchaToken) => {
-    fetch("/api/validarGoogleCaptcha", {
-      method: "POST",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        gRecaptchaToken: gReCaptchaToken,
-      }),
+    axios
+        .post("/api/validarGoogleCaptcha", {
+          gReCaptchaToken,
     })
-      .then((res) => res.json())
       .then((res) => {
-        console.log(res, "response from backend");
-        if (res?.status === "success") {
+        console.log(res?.data?.status);
+        if (res?.data?.status === "success") {
+          console.log("se preguntara a mds");
           axios
             .post("/api/buscarDocumento", {
               codigoBarra,
