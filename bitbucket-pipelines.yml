@@ -27,7 +27,7 @@ pipelines:
             # rsync to a temp directory on remote server 
             - rsync -a  -e "ssh -o StrictHostKeyChecking=no" --delete $BITBUCKET_CLONE_DIR/deploy/ $USER@$REMOTE_IP:/opt/consulta-temp
             # clear  current serving directory, sync from temp directory to serving directory, restart next server
-            - ssh -o StrictHostKeyChecking=no $USER@$REMOTE_IP "rsync -ar --delete /opt/consulta-temp/ /opt/consulta && cp /opt/env/.env.local /opt/consulta/.env.local  && pm2 restart consulta && rm -r /opt/consulta-temp"
+            - ssh -o StrictHostKeyChecking=no $USER@$REMOTE_IP "rsync -ar --delete /opt/consulta-temp/ /opt/consulta && cp /opt/env/.env.production /opt/consulta/.env.production && pm2 restart consulta && rm -r /opt/consulta-temp"
             
 definitions:
   caches:
