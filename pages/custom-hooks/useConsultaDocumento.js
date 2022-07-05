@@ -28,7 +28,6 @@ export default function useConsultaDocumento(codigoBarra) {
             });
 
           setResultado(res?.message);
-          setIsLoading(false);
         } else {
           setResultado(res?.message);
           setIsLoading(false);
