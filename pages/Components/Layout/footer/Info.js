@@ -1,20 +1,12 @@
 import Image from "next/image";
 import React from "react";
 import styles from "@/styles/Home.module.css";
+import { Typography } from "@mui/material";
 
 export default function Info() {
   return (
     <>
-      <a
-        href="#"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {" "}
-        <span className={styles.logo}>
-         
-        </span>
-      </a>
+      <Typography variant="body2">Desarrollado por barbatos</Typography>
     </>
   );
 }
