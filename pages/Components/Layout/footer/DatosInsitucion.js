@@ -4,7 +4,7 @@ import React from "react";
 export default function DatosInsitucion() {
   return (
     <Image
-      src="/logo_institucion.jpg"
+      src="/logo.png"
       alt="Institucion"
       width={80}
       height={80}
