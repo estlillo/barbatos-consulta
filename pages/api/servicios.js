@@ -24,8 +24,8 @@ export default function handler(req, res) {
     {
       title: "Inyección de documentos (En construcción)",
       description: "Inyecta documentos al gestor.",
-      urlRedirect: "/InyectarDocumento",
-      active: false,
+      urlRedirect: "/Inyectar",
+      active: true,
     },
   ];
 
