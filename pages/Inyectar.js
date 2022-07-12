@@ -13,8 +13,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import useFetch from "@/customHooks/useFetch";
 
+import useObtenerData from "./custom-hooks/useObtenerData";
 export default function Inyectar() {
   const [tipoDocumento, setTipoDocumento] = React.useState("");
   const [formatoDocumento, setFormatoDocumento] = React.useState("");
@@ -23,19 +23,18 @@ export default function Inyectar() {
     "Documento con proceso"
   );
   const [isProceso, setIsProceso] = React.useState(false);
-  const {data: tiposDocumento, loading: loadingTd,error: errorTd} = useFetch('/api/servicios/tiposDocumento');
-  const {data: formatosDocumento, loading: loadingFd,error: errorFd} = useFetch('/api/servicios/formatosDocumento');
-  const {data: procesosDocumento, loading: loadingPd,error: errorPd} = useFetch('/api/servicios/procesosDocumento');
+
+  const [ tiposDocumento, loadingTd, errorTd ] = useObtenerData({url:'/api/servicios/tiposDocumento'})
+  const [ formatosDocumento, loadingFd, errorFd ] = useObtenerData({url:'/api/servicios/formatosDocumento'})
+  const [ procesosDocumento, loadingPd, errorPd ] = useObtenerData({url:'/api/servicios/procesosDocumento'})
 
   const handleChange = (event) => {
     setTipoDocumento(event.target.value);
-
     console.log(tipoDocumento);
   };
 
   const handleChangeProceso = (event) => {
     setProcesoDocumento(event.target.value);
-
     console.log(tipoDocumento);
   };
 
