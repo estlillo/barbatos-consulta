@@ -43,6 +43,7 @@ export default function SelectForm({
         value={valor}
         label={inputLabel}
         onChange={handleChange}
+        disabled={disabled}
       >
         {options &&
           options.map((option, index) => (
