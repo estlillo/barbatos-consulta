@@ -1,4 +1,13 @@
-import { Button, Divider, FormControlLabel, Grid, Switch } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  Divider,
+  FormControlLabel,
+  Grid,
+  Switch,
+  Typography,
+} from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import React from "react";
 import { Controller, FormProvider, useForm } from "react-hook-form";
@@ -9,9 +18,11 @@ import JoditText from "@/components/JoditText";
 
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "./DatePicker";
-import  MultipleUsers  from "@/components/MultipleUsers";
+import MultipleUsers from "@/components/MultipleUsers";
+import useInyectarDocumento from "@/customHooks/useInyectarDocumento";
 
 export default function FormInyeccion() {
+  const [data, setData] = React.useState(null);
   const [labelProceso, setLabelProceso] = React.useState(
     "Documento sin proceso"
   );
@@ -36,25 +47,76 @@ export default function FormInyeccion() {
     }
   };
 
- 
   const methods = useForm({
-    mode: 'all',
-    reValidateMode: 'onChange',
+    mode: "all",
+    reValidateMode: "onChange",
     defaultValues: {}, // Apparently `defaultValues` being null is a DEAL BREAKER!
     shouldFocusError: true, // focus input field after submit if it is not following required rule of input field
   }); // re
-  const { register, handleSubmit, formState: { errors } } = methods;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = methods;
+
+  const [isLoading, resultado, error] = useInyectarDocumento(data);
 
   const sendToApi = (data) => {
-    alert(JSON.stringify(data));
     console.log(data);
+    setData(data);
   };
 
   return (
     <>
-      <FormProvider { ...methods}>
+     
+      <FormProvider {...methods}>
         <form onSubmit={handleSubmit(sendToApi)}>
           <Grid container spacing={1}>
+
+          <Grid item xs={12} md={12}>
+            <Typography variant="h6" component="h6">
+              Datos del Expediente
+            </Typography>
+            <Divider />
+          </Grid>
+
+
+
+          <Grid item xs={12} md={6}>
+          <TextFieldForm
+                id="emisorExpediente"
+                name="emisorExpediente"
+                inputLabel="Emisor Expediente"
+                helper="Escribe el emisor del expediente"
+                register={register}
+                errors={errors}
+                rules={{ required: "Campo emisor del expediente es obligatorio" }}
+              />
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+            <TextFieldForm
+                id="destinatarioExpediente"
+                name="destinatarioExpediente"
+                inputLabel="Destinatario del Expediente"
+                helper="Escribe el destinatario del expediente"
+                register={register}
+                errors={errors}
+                rules={{ required: "Campo destinatario del expediente es obligatorio" }}
+              />
+            </Grid>
+
+
+
+            <Grid item xs={12} md={12}>
+            <Typography variant="h6" component="h6">
+              Datos del Documento
+            </Typography>
+            <Divider />
+          </Grid>
+
+
+            
             <Grid item xs={12} md={12}>
               <FormControlLabel
                 margin="normal"
@@ -230,9 +292,34 @@ export default function FormInyeccion() {
             </Grid>
             <Grid item xs={12} md={12}>
               <Divider></Divider>
-              <Button variant="contained" type="submit" endIcon={<SendIcon />}>
-                Enviar
-              </Button>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  padding: "1rem",
+                }}
+              >
+                <Button
+                  variant="contained"
+                  type="submit"
+                  disabled={isLoading}
+                  endIcon={<SendIcon />}
+                >
+                  Enviar
+                </Button>
+                <br></br>
+                {error &&
+                  error.map((err) => <><Alert severity="error">{err}</Alert> <br></br></>)}
+
+                {isLoading && <div>Cargando...</div>}
+                <br></br>
+                {resultado && resultado.mensaje && (
+                  <Alert severity="success">
+                    {"Expediente inyectado correctamenre " + resultado?.mensaje}
+                  </Alert>
+                )}
+              </Box>
             </Grid>
           </Grid>
         </form>

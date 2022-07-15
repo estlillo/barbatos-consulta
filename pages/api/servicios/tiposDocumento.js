@@ -1,12 +1,16 @@
 export default function handler(req, res) {
   const tiposDocumento = [
     {
-      id: 1,
+      id: 10,
       description: "Carta",
     },
     {
-      id: 2,
+      id: 1,
       description: "Oficio ordinario",
+    },
+    {
+      id: 77,
+      description: "Oficio ordinario P/D",
     },
     {
       id: 3,

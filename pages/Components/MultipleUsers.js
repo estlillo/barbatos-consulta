@@ -57,7 +57,7 @@ export default function MultipleUsers({
                 }
               >
                 <TextField
-                  {...register(`${nombreLista}.${index}.nombre`)}
+                  {...register(`${nombreLista}.${index}.usuario`)}
                   margin="normal"
                   fullWidth
                   label="Escribe el nombre"
@@ -72,7 +72,7 @@ export default function MultipleUsers({
           variant="outlined"
           endIcon={<AddIcon />}
           onClick={() => {
-            append({ nombre: "" });
+            append({ usuario: "" });
           }}
         >
           Agregar
