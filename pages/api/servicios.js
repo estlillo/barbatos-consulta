@@ -6,7 +6,7 @@ export default function handler(req, res) {
       description:
         "Consulta la información de un expediente, incluyendo todos los documentos que este posee.",
       urlRedirect: "/Consulta",
-      active: false,
+      active: true,
     },
     {
       title: "Verificación de documentos",
