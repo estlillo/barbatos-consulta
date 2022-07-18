@@ -8,6 +8,7 @@ export default function DateFormated({ date, preTexto, postTexto }) {
   if (!preTexto) preTexto = "";
   if (!postTexto) postTexto = "";
   const formatedDate = date;
+  if (!date) return null;
   return (
     <Tooltip title={moment(formatedDate).format("LL")}>
       <div>
