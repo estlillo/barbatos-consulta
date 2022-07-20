@@ -1,33 +1,33 @@
-import { FormControl, InputLabel } from "@mui/material";
+import { FormControl, InputLabel, TextField } from "@mui/material";
 import React from "react";
-import PropTypes from 'prop-types';
-import ReactDatePicker from "react-datepicker";
 import { Controller, useForm, useFormContext } from "react-hook-form";
-import "react-datepicker/dist/react-datepicker.css";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import moment from "moment";
 
-export default function DatePicker({ inputLabel, name, placeholder }) {
-
-
+export default function DateCustomPicker({ inputLabel, name, placeholder, value, onChange }) {
+  const [val, setVal] = React.useState(new Date());
   if (!name) name = "";
   if (!inputLabel) inputLabel = "";
   if (!placeholder) placeholder = "";
-  const { control } = useForm();
   return (
-    <FormControl fullWidth margin="normal">
-      <InputLabel id="demo-simple-select-label">{inputLabel}</InputLabel>
-
-
-      <Controller
-        control={control}
-        name={name}
-        render={({ field }) => (
-          <ReactDatePicker
-            placeholderText={placeholder}
-            onChange={(e) => field.onChange(e)}
-            selected={field.value}
-          />
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <DatePicker
+        key={name}
+        margin="normal"
+        id={name}
+        disableFuture
+        label={inputLabel}
+        inputFormat="dd/MM/yyyy"
+        value={value}
+        KeyboardButtonProps={{
+          "aria-label": "change date",
+        }}
+        onChange={onChange}
+        renderInput={(params) => (
+          <TextField margin="normal" fullWidth {...params} />
         )}
       />
-    </FormControl>
+    </LocalizationProvider>
   );
 }

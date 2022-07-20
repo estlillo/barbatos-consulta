@@ -1,16 +1,12 @@
 export default function handler(req, res) {
   const formatosDocumento = [
     {
-      id: 1,
-      description: "PAPEL",
+      id: 3,
+      description: "ELECTRÓNICO",
     },
     {
       id: 2,
-      description: "DIGITAL",
-    },
-    {
-      id: 3,
-      description: "ELECTRÓNICO",
+      description: "PAPEL / DIGITAL",
     }
   ];
 

@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import React from "react";
 
-export default function SelectForm({
+export default function SelectFormFormatoDocumento({
   inputLabel,
   register,
   options,
@@ -16,9 +16,9 @@ export default function SelectForm({
   disabled,
   errors,
   rules,
+  setFormatoSeleccionado,
   ...props
 }) {
-  
   let errorMessages = "";
   if (errors && errors[name]) {
     errorMessages = errors[name];
@@ -29,6 +29,7 @@ export default function SelectForm({
   const [valor, setValor] = React.useState("");
 
   const handleChange = (event) => {
+    setFormatoSeleccionado(event.target.value);
     setValor(event.target.value);
     console.log(valor);
   };
@@ -44,9 +45,7 @@ export default function SelectForm({
         value={valor}
         label={inputLabel}
         onChange={handleChange}
-        disabled={
-          disabled || options?.length === 0
-        }
+        disabled={disabled}
       >
         {options &&
           options.map((option, index) => (

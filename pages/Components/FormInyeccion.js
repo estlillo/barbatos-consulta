@@ -10,26 +10,42 @@ import {
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import React from "react";
+
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import useObtenerData from "@/customHooks/useObtenerData";
 import SelectForm from "@/components/SelectForm";
 import TextFieldForm from "@/components/TextFieldForm";
-import JoditText from "@/components/JoditText";
 
-import "react-datepicker/dist/react-datepicker.css";
-import DatePicker from "./DatePicker";
 import MultipleUsers from "@/components/MultipleUsers";
 import useInyectarDocumento from "@/customHooks/useInyectarDocumento";
+
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+
+import DateCustomPicker from "@/components/DatePicker";
+import useTiposDocumento from "@/customHooks/useTiposDocumento";
+import SelectFormFormatoDocumento from "@/components/SelectFormFormatoDocumento";
+
+const importJodit = () => import('jodit-react');
+
+import dynamic from 'next/dynamic';
+
+const JoditEditor = dynamic(importJodit, {
+    ssr: false,
+});
 
 export default function FormInyeccion() {
   const [data, setData] = React.useState(null);
   const [labelProceso, setLabelProceso] = React.useState(
     "Documento sin proceso"
   );
+  const [formatoSeleccionado, setFormatoSeleccionado] = React.useState(null);
+
   const [isProceso, setIsProceso] = React.useState(false);
 
-  const [tiposDocumento, loadingTd, errorTd] = useObtenerData({
+  const [tiposDocumento, errorTd] = useTiposDocumento({
     url: "/api/servicios/tiposDocumento",
+    formato: formatoSeleccionado,
   });
   const [formatosDocumento, loadingFd, errorFd] = useObtenerData({
     url: "/api/servicios/formatosDocumento",
@@ -52,13 +68,14 @@ export default function FormInyeccion() {
     reValidateMode: "onChange",
     defaultValues: {}, // Apparently `defaultValues` being null is a DEAL BREAKER!
     shouldFocusError: true, // focus input field after submit if it is not following required rule of input field
-  }); // re
+  });
+
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors },
   } = methods;
-
   const [isLoading, resultado, error] = useInyectarDocumento(data);
 
   const sendToApi = (data) => {
@@ -68,55 +85,51 @@ export default function FormInyeccion() {
 
   return (
     <>
-     
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(sendToApi)}>
           <Grid container spacing={1}>
+            <Grid item xs={12} md={12}>
+              <Typography variant="h6" component="h6">
+                Datos del Expediente
+              </Typography>
+              <Divider />
+            </Grid>
 
-          <Grid item xs={12} md={12}>
-            <Typography variant="h6" component="h6">
-              Datos del Expediente
-            </Typography>
-            <Divider />
-          </Grid>
-
-
-
-          <Grid item xs={12} md={6}>
-          <TextFieldForm
+            <Grid item xs={12} md={6}>
+              <TextFieldForm
                 id="emisorExpediente"
                 name="emisorExpediente"
                 inputLabel="Emisor Expediente"
                 helper="Escribe el emisor del expediente"
                 register={register}
                 errors={errors}
-                rules={{ required: "Campo emisor del expediente es obligatorio" }}
+                rules={{
+                  required: "Campo emisor del expediente es obligatorio",
+                }}
               />
             </Grid>
 
             <Grid item xs={12} md={6}>
-            <TextFieldForm
+              <TextFieldForm
                 id="destinatarioExpediente"
                 name="destinatarioExpediente"
                 inputLabel="Destinatario del Expediente"
                 helper="Escribe el destinatario del expediente"
                 register={register}
                 errors={errors}
-                rules={{ required: "Campo destinatario del expediente es obligatorio" }}
+                rules={{
+                  required: "Campo destinatario del expediente es obligatorio",
+                }}
               />
             </Grid>
 
-
-
             <Grid item xs={12} md={12}>
-            <Typography variant="h6" component="h6">
-              Datos del Documento
-            </Typography>
-            <Divider />
-          </Grid>
+              <Typography variant="h6" component="h6">
+                Datos del Documento
+              </Typography>
+              <Divider />
+            </Grid>
 
-
-            
             <Grid item xs={12} md={12}>
               <FormControlLabel
                 margin="normal"
@@ -140,7 +153,20 @@ export default function FormInyeccion() {
                 disabled={!isProceso}
               />
             </Grid>
-
+            <Grid item xs={12} md={4}>
+              <SelectFormFormatoDocumento
+                inputLabel="Formato de documento"
+                name="formatoDocumento"
+                register={register}
+                setFormatoSeleccionado={setFormatoSeleccionado}
+                rules={{
+                  required: "Campo Formato de documento es obligatorio",
+                }}
+                errors={errors}
+                options={formatosDocumento}
+                helper="Seleccione el formato de documento"
+              />
+            </Grid>
             <Grid item xs={12} md={4}>
               <SelectForm
                 inputLabel="Tipo de documento"
@@ -152,19 +178,7 @@ export default function FormInyeccion() {
                 helper="Seleccione el tipo de documento"
               />
             </Grid>
-            <Grid item xs={12} md={4}>
-              <SelectForm
-                inputLabel="Formato de documento"
-                name="formatoDocumento"
-                register={register}
-                rules={{
-                  required: "Campo Formato de documento es obligatorio",
-                }}
-                errors={errors}
-                options={formatosDocumento}
-                helper="Seleccione el formato de documento"
-              />
-            </Grid>
+
             <Grid item xs={12} md={4}>
               <TextFieldForm
                 id="autor"
@@ -222,12 +236,19 @@ export default function FormInyeccion() {
               />
             </Grid>
             <Grid item xs={12} md={4}>
-              {/* <DatePicker
-            inputLabel="Fecha de documento"
-            control={control}
-            name="fecha"
-            placeholder="Seleccione fecha"
-          /> */}
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <Controller
+                  name="fechaDocumento"
+                  control={control}
+                  inputLabel="Test111"
+                  defaultValue={new Date()}
+                  placeholder="test test"
+                  render={({
+                    field: { onChange, value },
+                    fieldState: { error, invalid },
+                  }) => <DateCustomPicker value={value} onChange={onChange} />}
+                />
+              </LocalizationProvider>
             </Grid>
             <Grid item xs={12} md={6}>
               <TextFieldForm
@@ -257,16 +278,14 @@ export default function FormInyeccion() {
             </Grid>
 
             <Grid item xs={12} md={12}>
-              <TextFieldForm
-                id="contenido"
+              Contenido 
+              <br></br>
+              <Controller
                 name="contenido"
-                inputLabel="Contenido"
-                helper="Escribe el contenido del documento"
-                multiline
-                rows={10}
-                register={register}
-                errors={errors}
-                rules={{ required: "Campo contenido es obligatorio" }}
+                control={control}
+                render={({ field: { value, onChange } }) => {
+                  return <JoditEditor editorState={value} onChange={onChange} />;
+                }}
               />
             </Grid>
             <Grid item xs={12} md={4}>
@@ -310,7 +329,11 @@ export default function FormInyeccion() {
                 </Button>
                 <br></br>
                 {error &&
-                  error.map((err) => <><Alert severity="error">{err}</Alert> <br></br></>)}
+                  error.map((err) => (
+                    <>
+                      <Alert severity="error">{err}</Alert> <br></br>
+                    </>
+                  ))}
 
                 {isLoading && <div>Cargando...</div>}
                 <br></br>
