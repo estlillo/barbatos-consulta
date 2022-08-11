@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://www.exedoc.cl/esquemas" targetNamespace="http://www.exedoc.cl/esquemas" elementFormDefault="qualified" attributeFormDefault="unqualified">		
+    <xsd:element name="Complemento">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="es">Complemento, estructura adicional utilizada por Exedoc</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="CodigoTipoDocumento" type="xsd:int" minOccurs="0">
+                    <xsd:annotation>
+                        <xsd:documentation xml:lang="es">Valor que permite identificar el codigo interno del tipo de documento</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="ClaveIdentificadora" type="xsd:string" minOccurs="0">
+                    <xsd:annotation>
+                        <xsd:documentation xml:lang="es">Valor que permite identificar el origen del documento, ya sea una unidad o departamento</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="CodigoUnico" type="xsd:string" minOccurs="0">
+                    <xsd:annotation>
+                        <xsd:documentation xml:lang="es">Código que posteriormente permite hacer validaciones</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="DatosEmision" type="ns1:DatosEmisionType">
+                    <xsd:annotation>
+                        <xsd:documentation xml:lang="es">Estructura que permite identificar desde donde fue emitido el documento al interior de la institución</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="Distribucion" type="ns1:DistribucionType">
+                    <xsd:annotation>
+                        <xsd:documentation xml:lang="es">Distribución del documento</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="Operaciones" type="ns1:OperacionesType">
+                    <xsd:annotation>
+                        <xsd:documentation xml:lang="es">Estructura que permite conocer las acciones realizadas sobre el documento</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="LogoPrincipal" type="xsd:base64Binary">
+                    <xsd:annotation>
+                        <xsd:documentation xml:lang="es">Logo principal del documento, ubicado en la parte superior izquierda</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="LogoSecundario" type="xsd:base64Binary" minOccurs="0">
+                    <xsd:annotation>
+                        <xsd:documentation xml:lang="es">Logo secundario del documento, ubicado en la parte superior derecha</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="LogoFooter" type="xsd:base64Binary">
+                    <xsd:annotation>
+                        <xsd:documentation xml:lang="es">Logo del footer del documento, ubicado en la parte inferior izquierda</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:any minOccurs="0" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    
+    <xsd:complexType name="DistribucionType">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="es">Estructura que permite manejar los nombres a quien será distribuido el documento</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="Distribucion" minOccurs="0" maxOccurs="unbounded">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="es">Destinatario a quien se le distribuirá el documento</xsd:documentation>
+                </xsd:annotation>
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string"/>
+                </xsd:simpleType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="OperacionesType">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="es">Estructura que permite conocer las acciones realizadas sobre el documento</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="Operacion" minOccurs="0" maxOccurs="unbounded">
+                <xsd:complexType>
+                    <xsd:complexContent>
+                        <xsd:extension base="ns1:OperacionType"/>
+                    </xsd:complexContent>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="OperacionType">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="es">Estructura que permite conocer las acciones realizadas sobre el documento</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="Fecha" type="xsd:dateTime">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="es">Fecha en que se realizó la operación</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="Responsable" type="ns1:PersonaType">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="es">Persona que realizó la operación</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+        <xsd:attribute name="tipo" type="xsd:string" use="required"/>
+    </xsd:complexType>
+    
+    <xsd:complexType name="PersonaType">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="es">Estructura que permite manejar datos mínimos de una persona</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="Nombre" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="es">Nombre de la Persona</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="Rut" type="xsd:string" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="es">Rut de la Persona</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="Iniciales" type="xsd:string" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="es">Iniciales de la Persona Ej: JPP (Juan Perez Perez)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="Cargo">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="es">Cargo de la Persona Ej: Jefe del Departamento de Desarrollo</xsd:documentation>
+                </xsd:annotation>
+                <xsd:complexType>
+                    <xsd:simpleContent>
+                        <xsd:extension base="xsd:string">
+                            <xsd:attribute name="calidad" type="ns1:CalidadType"/>
+                        </xsd:extension>
+                    </xsd:simpleContent>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="Unidad" type="xsd:string" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="es">Unidad a la que pertenece la Persona Ej: Unidad de Sistemas</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="Mandato" type="xsd:string" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="es">En nombre de quien se realiza la operación Ej: Por Orden del Director</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="ImagenFirma" type="xsd:base64Binary" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="es">Imagen de la firma que será estampada en la visualización del documento</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:simpleType name="TipoOperacionType">
+        <xsd:annotation>
+            <xsd:documentation>Tipo de operación sobre el documento</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="FIRMA"/>
+            <xsd:enumeration value="VISACION"/>
+            <xsd:enumeration value="CREACION"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    
+    <xsd:simpleType name="CalidadType">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="es">Calidad en que una persona desempeña el cargo</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="TITULAR"/>
+            <xsd:enumeration value="SUBROGANTE"/>
+            <xsd:enumeration value="INTERINO"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    
+    <xsd:complexType name="DatosEmisionType">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="es">Datos asociados a la estructura jerárquica en que se creó el documento</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="Organizacion" type="xsd:string"/>
+            <xsd:element name="Division" type="xsd:string"/>
+            <xsd:element name="Departamento" type="xsd:string"/>
+            <xsd:element name="Unidad" type="xsd:string"/>
+            <xsd:element name="Cargo" type="xsd:string"/>
+        </xsd:sequence>
+    </xsd:complexType>
+</xsd:schema>
