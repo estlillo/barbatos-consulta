@@ -3,24 +3,6 @@
 import axios from "axios";
 import { obtenerAccessToken } from "./ObtenerToken";
 
-const jsonDocumento = {
-  id: 1,
-  description: "Carta",
-  tipo: "1",
-  files: [
-    {
-      name: "documento.pdf",
-      contentType: "application/pdf",
-      data: "base64 encoded string",
-    },
-    {
-      name: "documento2.pdf",
-      contentType: "application/pdf",
-      data: "base64 encoded string",
-    },
-  ],
-};
-
 export default async function handler(req, res) {
   try {
     const bearerToken = await obtenerAccessToken();
@@ -117,7 +99,7 @@ export default async function handler(req, res) {
 
 
     axios
-      .post("http://testing.exedoc.cl:80/exedoc/rest/api/inyectarDocumento", body, {
+      .post(process.env.EXEDOC_API_INYECTAR_DOCUMENTO, body, {
         headers: {
           Authorization: bearerToken,
           "Content-Type": "application/json",
